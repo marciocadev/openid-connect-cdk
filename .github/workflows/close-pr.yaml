@@ -1,0 +1,36 @@
+name: Deploy to AWS
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy CDK Stacks
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v5.1.1
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      
+      - name: Install project dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Synthesize CloudFormation template
+        run: npx cdk synth --quiet --output "cdk.out"
+
+      - name: Deploy CDK stacks
+        run: npx cdk deploy --all --app "cdk.out" --require-approval never
