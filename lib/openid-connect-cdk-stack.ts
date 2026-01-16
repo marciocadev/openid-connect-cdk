@@ -2,7 +2,7 @@ import { ManagedPolicy, OidcProviderNative, OpenIdConnectPrincipal, Role } from 
 import { CfnOutput, Duration, Stack, StackProps } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 
-const REPO_LIST: { owner: string, repo?: string, filter?: string }[] = [
+const REPO_LIST: { owner: string, repo: string, filter?: string }[] = [
   {
     owner: "marciocadev",
     repo: "openid-connect-cdk",
@@ -17,6 +17,7 @@ export class OpenidConnectCdkStack extends Stack {
     const gitHubOidcProvider = new OidcProviderNative(this, "GitHubOidcProvider", {
       url: `https://${gitHubDomain}`,
       clientIds: ["sts.amazonaws.com"],
+      thumbprints: ["2b18947a6a9fc7764fd8b5fb18a863b0c6dac24f"],
       oidcProviderName: "GithubOidcProvider",
     });
 
