@@ -7,6 +7,14 @@ const REPO_LIST: { owner: string, repo: string, filter?: string }[] = [
     owner: "marciocadev",
     repo: "openid-connect-cdk",
   },
+  {
+    owner: "marciocadev",
+    repo: "aws-apigateway-lambda-cdk",
+  },
+  {
+    owner: "marciocadev",
+    repo: "aws-apigateway-dynamodb-cdk",
+  },
 ];
 
 export class OpenidConnectCdkStack extends Stack {
